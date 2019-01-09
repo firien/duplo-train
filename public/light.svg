@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height='64' viewBox='0 0 64 64' width='64' xmlns='http://www.w3.org/2000/svg'>
+  <circle stroke='#aaa' fill='white' r='12'  cx='32' cy='32'/>
+  <g>
+    <path stroke='#aaa' fill='white' d="M 30 16 v -8 a 2 2 1 0 1 4 0 v 8 z"/>
+    <path stroke='#aaa' fill='white' d="M 30 48 v 8  a 2 2 0 0 0 4 0 v -8 z"/>
+    <path stroke='#aaa' fill='white' d="M 16 30 h -8 a 2 2 0 0 0 0 4 h 8 z"/>
+    <path stroke='#aaa' fill='white' d="M 48 30 h 8  a 2 2 1 0 1 0 4 h -8 z"/>
+  </g>
+  <g transform='translate(32,32)'>
+    <g transform='rotate(45)'>
+      <g transform='translate(-32,-32)'>
+        <path stroke='#aaa' fill='white' d="M 30 16 v -8 a 2 2 1 0 1 4 0 v 8 z"/>
+        <path stroke='#aaa' fill='white' d="M 30 48 v 8  a 2 2 0 0 0 4 0 v -8 z"/>
+        <path stroke='#aaa' fill='white' d="M 16 30 h -8 a 2 2 0 0 0 0 4 h 8 z"/>
+        <path stroke='#aaa' fill='white' d="M 48 30 h 8  a 2 2 1 0 1 0 4 h -8 z"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "lego",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "coffeescript": "^2.3.2",
+    "express": "^4.16.4",
+    "express-ws": "^4.0.0",
+    "node-poweredup": "^1.4.6",
+    "pug": "^2.0.3"
+  }
+}

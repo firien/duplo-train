@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height='64' viewBox='0 0 64 64' width='64' xmlns='http://www.w3.org/2000/svg'>
+  <g transform='translate(32,32)'>
+    <g transform='rotate(45)'>
+      <g transform='translate(-32,-32)'>
+        <path stroke='#aaa' fill='white' d="M 30 14 h 4 v 16 h 16 v 4 h -16 v 16 h -4 v -16 h -16 v -4 h 16 z"/>
+      </g>
+    </g>
+  </g>
+</svg>

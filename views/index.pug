@@ -1,0 +1,47 @@
+html
+  head
+    title= title
+    meta(charset='UTF-8')
+    meta(name='apple-mobile-web-app-capable' content='yes')
+    link(rel='stylesheet' href='index.css')
+    script(src='index.js')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+  body
+    noscript
+      p Requires javascript
+    p No trains. Refresh page to start scan.
+    template#train
+      .flex.train
+        section
+          span Train
+          span.name
+          meter.battery(min=0 max=100 low=25)
+        h2.title Engine
+        section.engine.flex
+          div
+            input.button.forward.repeater(type='radio' name='direction' value='forward')
+            label Forward
+          div
+            input.button.stop(type='radio' name='direction' value='none' checked=true)
+            label Stop
+          div
+            input.button.reverse.repeater(type='radio' name='direction' value='reverse')
+            label Reverse
+          input.throttle(type='range' min=30 max=80)
+        h3.title Lights
+        section.lights.flex
+          each color in colors
+            div
+              input.button(class=color type='radio' name='color' value=color)
+              label=color
+        h3.title Actions
+        section.flex
+          div
+            button.button.refill
+            label Refill
+          div
+            button.button.sound(value='horn')
+            label Horn
+          div
+            button.button.sound(value='steam')
+            label Steam

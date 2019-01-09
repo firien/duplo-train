@@ -1,0 +1,266 @@
+body {
+  font-family: -apple-system, 'Helvetica Neue', 'Arial', 'Tahoma';
+  margin: 0;
+  display: flex;
+}
+body > .train {
+  flex-wrap: wrap;
+  width: 100vw;
+  transition: filter 1s ease-in-out;
+}
+body > .train:not(:first-of-type) {
+  border-left: thin solid black;
+}
+
+@media screen and (min-width:600px) {
+  .train:not(:only-of-type) {
+    max-width: 50vw;
+  }
+}
+.train > section:first-child {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  background-color: white;
+  flex: 1 0 100%;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  z-index: 10;
+}
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .train > section:first-child {
+    -webkit-backdrop-filter: blur(0.8em);
+    background-color: rgba(255,255,255,0.6);
+  }
+}
+
+
+.train > section:first-child > * {
+  flex: 0 0 20%;
+}
+.train > section:first-child .name {
+  flex: 0 0 60%;
+  text-align: center;
+  font-style: italic;
+}
+.button {
+  touch-action: manipulation;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: value;
+/*  line-height: 4rem;*/
+  height: 5rem;
+  width: 5rem;
+/*  max-height: 5rem;*/
+/*  max-width: 5rem;*/
+  border-radius: 50%;
+  border: none;
+  display: block;
+  cursor: pointer;
+  padding: 0;
+  box-sizing: border-box;
+/*  opacity: 0.8;*/
+  transform: scale(0.9);
+  transition: transform 0.3s ease-in-out;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.button.repeater {
+  background-repeat: repeat-x;  
+}
+.button:focus {
+  outline: none;
+}
+.button:hover {
+  opacity: 1;
+  transform: scale(0.95);
+}
+.button:checked, .button:active {
+  opacity: 1;
+  transform: scale(1);
+}
+.button + label {
+  touch-action: manipulation;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  border-radius: 0.3em;
+}
+.stop {
+  background-image: url(stop.svg);
+}
+.forward {
+  background-image: url(forward.svg);
+}
+.reverse {
+  background-image: url(reverse.svg);
+}
+.sound {
+  background-color: gold;
+}
+.refill {
+  background-color: darkblue;
+}
+.green {
+  background-color: green;
+}
+.green:checked + label {
+  background-color: green;
+  color: white;
+}
+.blue {
+  background-color: blue;
+}
+.blue:checked + label {
+  background-color: blue;
+  color: white;
+}
+.red, input[name^=direction].stop {
+  background-color: red;
+/*  border: thin darkred solid;*/
+}
+.red:checked + label, input[name^=direction].stop:checked + label {
+  background-color: red;
+  color: white;
+}
+.yellow {
+  background-color: yellow;
+}
+.yellow:checked + label {
+  background-color: yellow;
+}
+.orange {
+  background-color: orange;
+}
+.orange:checked + label {
+  background-color: orange;
+  color: white;
+}
+.purple {
+  background-color: purple;
+}
+.purple:checked + label {
+  background-color: purple;
+  color: white;
+}
+.pink {
+  background-color: pink;
+}
+.pink:checked + label {
+  background-color: pink;
+}
+
+.flex {
+  display: flex;
+}
+section {
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+}
+
+.lights {
+  padding-left: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+section > div {
+  padding: 0 0.3em;
+}
+section.engine > div {
+/*  padding: 0;*/
+/*  flex: 0 0 25%;*/
+}
+.lights .button {
+  background-image: url(light.svg);
+}
+.engine {
+  padding: 0 1em 1em 1rem;
+  flex: 1 0;
+  flex-wrap: wrap;
+}
+input[type=range] {
+  -webkit-appearance: none;
+  background-color: darkgreen;
+  border-radius: 1em;
+}
+input[name^=direction] {
+  background-color: grey;
+}
+input[name^=direction]:checked {
+  background-color: darkgreen;
+}
+input[name^=direction]:checked + label {
+  background-color: darkgreen;
+  color: white;
+}
+input[name^=color] {
+  border: thin solid #aaa;
+}
+input[name^=color] + label {
+  text-transform: capitalize;
+}
+input.off + label {
+  border-top-right-radius: 0.3em;
+  border-bottom-right-radius: 0.3em;
+  border-right: thin solid #333;
+}
+
+input.off:checked + label {
+  background-color: red;
+  color: white;
+}
+input.throttle {
+  flex: 1 0 100%;
+  margin-top: 2em;
+  display: block;
+  width: 100%;
+}
+
+.title {
+  font-size: 4vh;
+  padding: 1rem 0 1rem 1rem;
+  font-weight: 500;
+  margin: 0;
+  flex: 1 0 100%;
+  box-sizing: border-box;
+  border-top: thin solid black;
+/*  border-bottom: thin solid black;*/
+}
+
+
+@keyframes moving {
+  0% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 450% 50%;
+  }
+}
+
+input[name^=direction].stop:checked {
+  background-color: red;
+  animation: none;
+}
+
+input[name^=direction]:checked {
+  animation: moving 0.65s infinite;
+  animation-timing-function: ease-out;
+}
+
+input[name^=direction].reverse:checked {
+  animation-direction: reverse;
+  animation-timing-function: ease-in;
+/*  animation-timing-function: linear;*/
+}
+
+.freeze {
+  filter: grayscale(1);
+}
+
+p {
+  text-align: center;
+  font-size: 1.5rem;
+  width: 100vw;
+}
