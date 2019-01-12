@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "lego",
+  "name": "duplo-train",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "coffeescript": "^2.3.2",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
-    "node-poweredup": "^1.4.6",
+    "node-poweredup": "^1.5.1",
     "pug": "^2.0.3"
   }
 }

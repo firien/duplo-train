@@ -1,5 +1,4 @@
-
-## Raspberry Pi Zero
+## Raspberry Pi Zero W Install
 
 
 Install [Node 8.x](https://www.thepolyglotdeveloper.com/2018/03/install-nodejs-raspberry-pi-zero-w-nodesource/) ([Not 10.x](https://github.com/noble/node-bluetooth-hci-socket/issues/95))
@@ -13,15 +12,50 @@ Install dependencies
 
     sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev git
 
-
 Allow Node access to [Bluetooth](https://github.com/noble/noble#running-on-linux)
 
     sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 
+Create user to run application
+
+    sudo adduser conductor
+    su conductor
+    cd
+    git clone git@github.com:firien/duplo-train.git
+    cd duplo-train
+    npm install#this may take a few minutes
+
+Auto Start Up
+
+Save file as `duplo-train.service`
+
+    [Unit]
+    Description=Duplo Train
+    After=network.target
+    
+    [Service]
+    ExecStart=/usr/local/bin/npx coffee app.coffee
+    WorkingDirectory=/home/conductor/duplo-train
+    StandardOutput=inherit
+    StandardError=inherit
+    Restart=always
+    
+    User=conductor
+    Group=conductor
+    Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    Environment=NODE_ENV=production
+    
+    [Install]
+    WantedBy=multi-user.target
+
+And setup systemd
+
+    sudo cp duplo-train.service /etc/systemd/system/duplo-train.service
+    sudo systemctl enable duplo-train.service
 
 ### Development
 
-Run application; defaults to port 3009
+Run application; defaults to port 3000
 
     npx coffee app.coffee
 

@@ -3,7 +3,7 @@ bodyParser = require('body-parser')
 app = express()
 expressWs = require('express-ws')(app)
 
-port = 3009
+port = 3000
 app.set('view engine', 'pug')
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -28,20 +28,22 @@ pup.on('discover', (train) ->
 
 scanning = false
 timer = 0
-quickScanner = ->
+TEN_SECONDS = 10000
+requestScan = ->
   if not scanning
     scanning = true
     pup.scan()
   # reset 
   clearTimeout(timer)
+  # scan for 10 seconds
   timer = setTimeout( ->
     pup.stop()
     scanning = false
-  , 10000)
-quickScanner()
+  , TEN_SECONDS)
+requestScan()
 
 app.get('/', (req, res) ->
-  quickScanner()
+  requestScan()
   colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
   title = 'Trains'
   res.render('index', {colors, title})
