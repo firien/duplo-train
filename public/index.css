@@ -24,6 +24,7 @@ body > .train:not(:first-of-type) {
   background-color: white;
   flex: 1 0 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 1rem;
   box-sizing: border-box;
@@ -36,20 +37,24 @@ body > .train:not(:first-of-type) {
   }
 }
 
-
-.train > section:first-child > * {
-  flex: 0 0 20%;
+input[name=name]:invalid {
+  background-color: mistyrose;
 }
-.train > section:first-child .name {
-  flex: 0 0 60%;
-  text-align: center;
-  font-style: italic;
+input[name=name] {
+  appearance: none;
+  -webkit-appearance: none;
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: none;
+}
+.train > section:first-child > * {
+  flex: 0 0 auto;
 }
 .button {
   touch-action: manipulation;
   appearance: none;
   -webkit-appearance: none;
-  -moz-appearance: value;
+/*  -moz-appearance: value;*/
 /*  line-height: 4rem;*/
   height: 5rem;
   width: 5rem;
@@ -98,6 +103,7 @@ body > .train:not(:first-of-type) {
   background-image: url(reverse.svg);
 }
 .sound {
+  background-image: url(sound.svg);
   background-color: gold;
 }
 .refill {

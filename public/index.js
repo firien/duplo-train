@@ -15,6 +15,12 @@ const onmessage = function(event) {
         input.checked = true
       }
     }
+    if (response.hasOwnProperty('name')) {
+      let input = section.querySelector('input[name=name]')
+      if (input) {
+        input.value = response.name
+      }
+    }
     if (response.hasOwnProperty('speed')) {
       let input = section.querySelector('.throttle')
       if (input) {
@@ -38,12 +44,12 @@ const onmessage = function(event) {
 const initWebSocket = function() {
   $socket = new WebSocket(`ws://${location.host}/`)
   $socket.onmessage = onmessage
-  $socket.onclose = function() {
-    queryAll(document.body, '.train.freeze[data-uuid]').forEach(function(section) {
-      let uuid = section.getAttribute('data-uuid')
-      initTrain({uuid})
-    })
-  }
+  // $socket.onclose = function() {
+  //   queryAll(document.body, '.train.freeze[data-uuid]').forEach(function(section) {
+  //     let uuid = section.getAttribute('data-uuid')
+  //     initTrain({uuid})
+  //   })
+  // }
   $socket.onclose = function() {
     queryAll(document.body, '.train:not(.freeze)[data-uuid]').forEach(function(section) {
       let uuid = section.getAttribute('data-uuid')
@@ -52,7 +58,6 @@ const initWebSocket = function() {
   }
 }
 
-initWebSocket()
 var $template = null
 
 const speak = function(text) {
@@ -71,6 +76,10 @@ const queryAll = function(parent, selector) {
   return Array.prototype.slice.call(parent.querySelectorAll(selector))
 }
 
+const setName = function(value, uuid) {
+  payload = JSON.stringify({train: uuid, name: value})
+  $socket.send(payload)
+}
 const setColor = function(value, uuid) {
   speak(value)
   payload = JSON.stringify({train: uuid, color: value})
@@ -105,7 +114,17 @@ const initTrain = function(train) {
     let newTrain = f.querySelector('.train')
     // document.body.appendChild(f)
     newTrain.setAttribute('data-uuid', uuid)
-    newTrain.querySelector('.name').textContent = train.name
+    // name
+    nameInput = newTrain.querySelector('input[name=name]')
+    nameInput.value = train.name
+    nameInput.addEventListener('change', function() {
+      let name = this.value.trim()
+      if (name.length > 0) {
+        setName(name, uuid)
+      } else {
+        // this.value = this.defaultValue
+      }
+    })
     newTrain.querySelector('meter.battery').value = train.battery
     // lights
     queryAll(newTrain, 'input[name=color]').forEach(function(button, i) {
@@ -187,6 +206,7 @@ document.addEventListener('visibilitychange', function() {
 })
 document.addEventListener('DOMContentLoaded', function() {
   $template = document.getElementById('train')
+  initWebSocket()
   // initTrain({uuid: 'adsf', name: 'Wilson', color: 'blue', speed: 35, direction: 'none', battery: 40})
   // setTimeout(disconnected, 3000)
   // initTrain({uuid: 'afd', name: 'Brewster', color: 'orange', speed: 65, direction: 'forward', battery: 20})

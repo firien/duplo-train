@@ -73,12 +73,16 @@ broadcast = (data, ws) ->
   )
 
 # train
+setName = (train, name) ->
+  train.setName(name)
+
 setMotor = (train) ->
   factor = switch train.direction
     when 'reverse' then -1
     when 'none' then 0
     else 1
   train.setMotorSpeed('MOTOR', train.speed * factor)
+
 refill = (train) ->
   await train.setMotorSpeed('MOTOR', 0)
   await train.playSound(sounds.WATER_REFILL)
@@ -106,6 +110,8 @@ app.ws('/', (ws, req) ->
           await train.setMotorSpeed('MOTOR', 0)
           await train.sleep(500)
         setMotor(train)
+      if response.name?
+        setName(train, response.name)
       if response.speed?
         train.speed = Number(response.speed)
         setMotor(train)
