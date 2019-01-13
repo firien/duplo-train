@@ -118,11 +118,14 @@ const initTrain = function(train) {
     nameInput = newTrain.querySelector('input[name=name]')
     nameInput.value = train.name
     nameInput.addEventListener('change', function() {
-      let name = this.value.trim()
-      if (name.length > 0) {
-        setName(name, uuid)
+      if (this.checkValidity()) {
+        let name = this.value.trim()
+        if (name.length > 0) {
+          setName(name, uuid)
+        }
       } else {
-        // this.value = this.defaultValue
+        // revert to old name
+        this.value = train.name
       }
     })
     newTrain.querySelector('meter.battery').value = train.battery
@@ -207,7 +210,4 @@ document.addEventListener('visibilitychange', function() {
 document.addEventListener('DOMContentLoaded', function() {
   $template = document.getElementById('train')
   initWebSocket()
-  // initTrain({uuid: 'adsf', name: 'Wilson', color: 'blue', speed: 35, direction: 'none', battery: 40})
-  // setTimeout(disconnected, 3000)
-  // initTrain({uuid: 'afd', name: 'Brewster', color: 'orange', speed: 65, direction: 'forward', battery: 20})
 })
