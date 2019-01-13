@@ -20,6 +20,14 @@ pup.on('discover', (train) ->
   train.speed = 50
   $trains[train.uuid] = train
   broadcastTrains()
+  train.on('speed', (port, speed) ->
+    # the train will stop automatically if the:
+    # * front wheels stop moving (thats where the speedometer is)
+    # * distance sensor detects the train is off the ground
+    if train.direction != 'none' && speed == 0
+      train.direction = 'none'
+      broadcast(train: train.uuid, direction: 'none')
+  )
   train.on('disconnect', ->
     broadcast(train: train.uuid, disconnect: true)
     delete $trains[train.uuid]

@@ -1,5 +1,6 @@
-## Raspberry Pi Zero W Install
+A website to control one or more Duplo® Trains. More than one device (browser) can connect and all controls are updated in real time.
 
+## Raspberry Pi Zero W Install
 
 Install [Node 8.x](https://www.thepolyglotdeveloper.com/2018/03/install-nodejs-raspberry-pi-zero-w-nodesource/) ([Not 10.x](https://github.com/noble/node-bluetooth-hci-socket/issues/95))
 
@@ -21,9 +22,9 @@ Create user to run application
     sudo adduser conductor
     su conductor
     cd
-    git clone git@github.com:firien/duplo-train.git
+    git clone https://github.com/firien/duplo-train.git
     cd duplo-train
-    npm install#this may take a few minutes
+    npm install
 
 Auto Start Up
 
@@ -61,7 +62,6 @@ Run application; defaults to port 3000
 
 ### TODO
 
-* Throttle label?
-* icon/logo
-* rename train
-* inline SVG in CSS
+- [ ] Throttle label?
+- [ ] icon/logo
+- [ ] inline SVG in CSS
