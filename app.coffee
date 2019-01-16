@@ -21,9 +21,8 @@ pup.on('discover', (train) ->
   $trains[train.uuid] = train
   broadcastTrains()
   train.on('speed', (port, speed) ->
-    # the train will stop automatically if the:
-    # * front wheels stop moving (thats where the speedometer is)
-    # * distance sensor detects the train is off the ground
+    # the train will stop automatically if the
+    # front wheels stop moving (thats where the speedometer is)
     if train.direction != 'none' && speed == 0
       train.direction = 'none'
       broadcast(train: train.uuid, direction: 'none')
@@ -61,7 +60,6 @@ broadcastTrains = (ws) ->
   broadcast(Object.values($trains).map((train) ->
     {
       uuid: train.uuid
-      battery: train.batteryLevel
       name: train.name
       color: $colors[train.color]?.toLowerCase()
       speed: train.speed
