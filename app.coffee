@@ -60,6 +60,7 @@ broadcastTrains = (ws) ->
   broadcast(Object.values($trains).map((train) ->
     {
       uuid: train.uuid
+      battery: train.batteryLevel
       name: train.name
       color: $colors[train.color]?.toLowerCase()
       speed: train.speed

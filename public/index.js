@@ -128,6 +128,7 @@ const initTrain = function(train) {
         this.value = train.name
       }
     })
+    newTrain.querySelector('meter.battery').value = train.battery
     // lights
     queryAll(newTrain, 'input[name=color]').forEach(function(button, i) {
       let id = `${uuid}-light-${i}`

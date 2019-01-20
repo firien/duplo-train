@@ -14,7 +14,7 @@
     "coffeescript": "^2.3.2",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
-    "node-poweredup": "^1.5.1",
+    "node-poweredup": "^1.6.2",
     "pug": "^2.0.3"
   }
 }

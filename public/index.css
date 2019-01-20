@@ -46,6 +46,7 @@ input[name=name] {
   font-size: 1.5rem;
   background-color: transparent;
   border: none;
+  max-width: 50vw;
 }
 .train > section:first-child > * {
   flex: 0 0 auto;
