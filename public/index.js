@@ -7,6 +7,12 @@ const onmessage = function(event) {
   } else {
     let uuid = response.train
     let section = document.querySelector(`.train[data-uuid='${uuid}']`)
+    if (response.hasOwnProperty('batteryLevel')) {
+      let meter = section.querySelector('meter.battery')
+      if (meter) {
+        meter.value = Number(response.batteryLevel)
+      }
+    }
     if (response.hasOwnProperty('color')) {
       let input = queryAll(section, `input[name='color-${uuid}']`).find(function(i) {
         return i.value == response.color

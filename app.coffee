@@ -16,15 +16,43 @@ $trains = {}
 
 pup.on('discover', (train) ->
   await train.connect()
-  train.direction = 'none'
+  train.commanded = false
   train.speed = 50
   $trains[train.uuid] = train
   broadcastTrains()
+  _direction = 'none'
+  hysteresis = 0
+  Object.defineProperty(train, 'direction'
+    get: -> _direction
+    set: (val) ->
+      if val != _direction
+        this.commanded = true
+        _direction = val
+        clearTimeout(hysteresis)
+        hysteresis = setTimeout( =>
+          this.commanded = false
+        , 1500)
+  )
+  # broadcast 
+  setInterval( ->
+    broadcast(train: train.uuid, batteryLevel: train.batteryLevel)
+  , 1000 * 60)
   train.on('speed', (port, speed) ->
+    if !train.commanded
+      # push-and-go (start motor)
+      if speed > 0 && train.direction == 'none'
+        train.direction = 'forward'
+        setMotor(train)
+        broadcast(train: train.uuid, direction: 'forward')
+      else if speed < 0 && train.direction == 'none'
+        train.direction = 'reverse'
+        setMotor(train)
+        broadcast(train: train.uuid, direction: 'reverse')
     # the train will stop automatically if the
     # front wheels stop moving (thats where the speedometer is)
-    if train.direction != 'none' && speed == 0
+    if speed == 0 && train.direction != 'none'
       train.direction = 'none'
+      # motor auto-stops
       broadcast(train: train.uuid, direction: 'none')
   )
   train.on('disconnect', ->
@@ -106,30 +134,30 @@ app.ws('/', (ws, req) ->
   broadcastTrains(ws)
   ws.on('pong', heartbeat)
   ws.on('message', (msg) ->
-    response = JSON.parse(msg)
-    train = $trains[response.train]
+    request = JSON.parse(msg)
+    train = $trains[request.train]
     if train?
-      if response.direction?
-        pause = (train.direction != 'none') && (train.direction != response.direction)
-        train.direction = response.direction
+      if request.direction?
+        pause = (train.direction != 'none') && (train.direction != request.direction)
+        train.direction = request.direction
         # stop first
         if pause
           await train.setMotorSpeed('MOTOR', 0)
           await train.sleep(500)
         setMotor(train)
-      if response.name?
-        setName(train, response.name)
-      if response.speed?
-        train.speed = Number(response.speed)
+      if request.name?
+        setName(train, request.name)
+      if request.speed?
+        train.speed = Number(request.speed)
         setMotor(train)
-      if response.color?
-        color = $colors[response.color.toUpperCase()]
+      if request.color?
+        color = $colors[request.color.toUpperCase()]
         train.color = color
         train.setLEDColor(color)
-      if response.refill?
+      if request.refill?
         refill(train)
-      if response.sound?
-        sound = sounds[response.sound.toUpperCase()]
+      if request.sound?
+        sound = sounds[request.sound.toUpperCase()]
         train.playSound(sound)
       # broadcast to other clients
       expressWs.getWss().clients.forEach((client) ->
