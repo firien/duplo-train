@@ -65,3 +65,4 @@ Run application; defaults to port 3000
 - [ ] Throttle label?
 - [ ] icon/logo
 - [ ] inline SVG in CSS
+- [ ] support default action bricks

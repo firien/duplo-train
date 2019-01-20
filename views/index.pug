@@ -15,8 +15,9 @@ html
         section
           input(type='text' name='name' maxlength=14 required=true placeholder='Name…' pattern='[\x20-\x7F]+')
           meter.battery(min=0 max=100 low=25)
-        h2.title Engine
-        section.engine.flex
+        header.flex
+          h3 Motor
+        section.motor.flex
           div
             input.button.forward.repeater(type='radio' name='direction' value='forward')
             label Forward
@@ -27,17 +28,23 @@ html
             input.button.reverse.repeater(type='radio' name='direction' value='reverse')
             label Reverse
           input.throttle(type='range' min=30 max=80)
-        h3.title Lights
+        header.flex
+          h3 Lights
+          input(type='checkbox' name='mute' checked=true)
+          label Announce Colors
         section.lights.flex
           each color in colors
             div
               input.button(class=color type='radio' name='color' value=color)
               label=color
-        h3.title Actions
+        header.flex
+          h3 Actions
+          input(type='checkbox' name='action' checked=true)
+          label Enable Action Bricks
         section.flex
-          div
-            button.button.refill
-            label Refill
+          // div
+          //  button.button.refill
+          //  label Refill
           div
             button.button.sound(value='horn')
             label Horn

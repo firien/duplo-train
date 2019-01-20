@@ -3,6 +3,9 @@ body {
   margin: 0;
   display: flex;
 }
+* {
+  box-sizing: border-box;
+}
 body > .train {
   flex-wrap: wrap;
   width: 100vw;
@@ -17,6 +20,13 @@ body > .train:not(:first-of-type) {
     max-width: 50vw;
   }
 }
+
+.flex > * {
+  flex:  0 0 auto;
+}
+.train > .flex {
+  width: 100%;
+}
 .train > section:first-child {
   position: sticky;
   position: -webkit-sticky;
@@ -29,6 +39,7 @@ body > .train:not(:first-of-type) {
   padding: 1rem;
   box-sizing: border-box;
   z-index: 10;
+  border-bottom: thin solid #555;
 }
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
   .train > section:first-child {
@@ -89,7 +100,6 @@ input[name=name] {
 }
 .button + label {
   touch-action: manipulation;
-  cursor: pointer;
   display: block;
   text-align: center;
   border-radius: 0.3em;
@@ -175,14 +185,10 @@ section {
 section > div {
   padding: 0 0.3em;
 }
-section.engine > div {
-/*  padding: 0;*/
-/*  flex: 0 0 25%;*/
-}
 .lights .button {
   background-image: url(light.svg);
 }
-.engine {
+.motor {
   padding: 0 1em 1em 1rem;
   flex: 1 0;
   flex-wrap: wrap;
@@ -225,18 +231,26 @@ input.throttle {
   width: 100%;
 }
 
-.title {
+header.flex {
+  align-items: center;
+  background-color: #eef;
+}
+header.flex > h3 {
   font-size: 4vh;
-  padding: 1rem 0 1rem 1rem;
+  padding: 0.5rem 0 0.5rem 1rem;
   font-weight: 500;
   margin: 0;
-  flex: 1 0 100%;
-  box-sizing: border-box;
-  border-top: thin solid black;
-/*  border-bottom: thin solid black;*/
+  flex: 1 0;
 }
-
-
+header input[type=checkbox] {
+  display: none;
+}
+label[for] {
+  cursor: pointer;
+}
+header input:checked + label {
+  background-color: yellow;
+}
 @keyframes moving {
   0% {
     background-position: 50% 50%;

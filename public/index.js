@@ -1,4 +1,5 @@
 var $socket = null
+var $announce = true
 
 const onmessage = function(event) {
   let response = JSON.parse(event.data)
@@ -67,21 +68,32 @@ const initWebSocket = function() {
 var $template = null
 
 const speak = function(text) {
-  let msg = new SpeechSynthesisUtterance()
-  msg.text = text
-  // # msg.voice = window.speechSynthesis.getVoices().find((voice) ->
-  // #   voice.voiceURI == 'com.apple.speech.synthesis.voice.karen.premium'
-  // # )
-  msg.voice = window.speechSynthesis.getVoices().find(function(voice) {
-    voice.name == 'Karen'
-  })
-  window.speechSynthesis.speak(msg)
+  if ($announce) {
+    let msg = new SpeechSynthesisUtterance()
+    msg.text = text
+    // # msg.voice = window.speechSynthesis.getVoices().find((voice) ->
+    // #   voice.voiceURI == 'com.apple.speech.synthesis.voice.karen.premium'
+    // # )
+    msg.voice = window.speechSynthesis.getVoices().find(function(voice) {
+      voice.name == 'Karen'
+    })
+    window.speechSynthesis.speak(msg)
+  }
 }
 
 const queryAll = function(parent, selector) {
   return Array.prototype.slice.call(parent.querySelectorAll(selector))
 }
 
+const setAnnouncer = function(e) {
+  $announce = this.checked
+  // this is a global setting
+  queryAll(document, 'input[name=mute]').forEach(function(input) {
+    if (input != this) {
+      input.checked = this.checked
+    }
+  }, this)
+}
 const setName = function(value, uuid) {
   payload = JSON.stringify({train: uuid, name: value})
   $socket.send(payload)
@@ -134,6 +146,16 @@ const initTrain = function(train) {
         this.value = train.name
       }
     })
+    // mute
+    muteInput = newTrain.querySelector('input[name=mute]')
+    if (muteInput) {
+      let id = `${uuid}-mute`
+      muteInput.id = id
+      let label = muteInput.nextElementSibling
+      label.setAttribute('for', id)
+      muteInput.addEventListener('click', setAnnouncer)
+    }
+    // battery
     newTrain.querySelector('meter.battery').value = train.battery
     // lights
     queryAll(newTrain, 'input[name=color]').forEach(function(button, i) {
