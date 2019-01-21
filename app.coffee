@@ -36,7 +36,7 @@ pup.on('discover', (train) ->
   # broadcast 
   setInterval( ->
     broadcast(train: train.uuid, batteryLevel: train.batteryLevel)
-  , 1000 * 60)
+  , 1000 * 15)
   train.on('speed', (port, speed) ->
     if !train.commanded
       # push-and-go (start motor)
@@ -54,6 +54,24 @@ pup.on('discover', (train) ->
       train.direction = 'none'
       # motor auto-stops
       broadcast(train: train.uuid, direction: 'none')
+  )
+  color = null
+  colorTimer = 0
+  train.on('color', (port, newColor) ->
+    if color != newColor
+      stamp = new Date()
+      diff = (stamp - colorTimer)
+      # if diff > 200
+      #   console.log("#{color} => #{train.speed} => #{diff}")
+      if diff > 220
+        if color == $colors.YELLOW
+          train.playSound(9)
+        if color == $colors.RED
+          train.direction = 'none'
+          setMotor(train)
+          broadcast(train: train.uuid, direction: 'none')
+      colorTimer = stamp
+      color = newColor
   )
   train.on('disconnect', ->
     broadcast(train: train.uuid, disconnect: true)
