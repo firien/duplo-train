@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 
 PoweredUP = require('node-poweredup')
 pup = new PoweredUP.PoweredUP()
-sounds = PoweredUP.Consts.DuploTrainBaseSound
+$sounds = PoweredUP.Consts.DuploTrainBaseSound
 $colors = PoweredUP.Consts.Color
 $trains = {}
 
@@ -58,20 +58,17 @@ pup.on('discover', (train) ->
   color = null
   colorTimer = 0
   train.on('color', (port, newColor) ->
-    if color != newColor
-      stamp = new Date()
-      diff = (stamp - colorTimer)
-      # if diff > 200
-      #   console.log("#{color} => #{train.speed} => #{diff}")
-      if diff > 220
-        if color == $colors.YELLOW
-          train.playSound(9)
+    clearTimeout(colorTimer)
+    colorTimer = setTimeout( ->
+      if train.direction != 'none' && !train.commanded
         if color == $colors.RED
           train.direction = 'none'
           setMotor(train)
           broadcast(train: train.uuid, direction: 'none')
-      colorTimer = stamp
-      color = newColor
+        else if color == $colors.YELLOW
+          train.playSound($sounds.HORN)
+    , 200)
+    color = newColor
   )
   train.on('disconnect', ->
     broadcast(train: train.uuid, disconnect: true)
@@ -138,7 +135,7 @@ setMotor = (train) ->
 
 refill = (train) ->
   await train.setMotorSpeed('MOTOR', 0)
-  await train.playSound(sounds.WATER_REFILL)
+  await train.playSound($sounds.WATER_REFILL)
   await train.sleep(4000)
   setMotor(train)
 
@@ -175,7 +172,7 @@ app.ws('/', (ws, req) ->
       if request.refill?
         refill(train)
       if request.sound?
-        sound = sounds[request.sound.toUpperCase()]
+        sound = $sounds[request.sound.toUpperCase()]
         train.playSound(sound)
       # broadcast to other clients
       expressWs.getWss().clients.forEach((client) ->
