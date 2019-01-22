@@ -11,7 +11,7 @@ html
       p Requires javascript
     p No trains. Refresh page to start scan.
     template#train
-      .flex.train
+      .train
         section
           input(type='text' name='name' maxlength=14 required=true placeholder='Name…' pattern='[\x20-\x7F]+')
           meter.battery(min=0 max=100 low=25)
@@ -30,7 +30,8 @@ html
           input.throttle(type='range' min=30 max=80)
         header.flex
           h3 Lights
-          input(type='checkbox' name='mute' checked=true)
+          input.switch(type='checkbox' name='mute' checked=true)
+          label
           label Announce Colors
         section.lights.flex
           each color in colors
@@ -39,7 +40,8 @@ html
               label=color
         header.flex
           h3 Actions
-          input(type='checkbox' name='action' checked=true)
+          input.switch(type='checkbox' name='action' checked=true)
+          label
           label Enable Action Bricks
         section.flex
           // div

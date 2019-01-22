@@ -2,47 +2,53 @@ var $socket = null
 var $announce = true
 
 const onmessage = function(event) {
-  let response = JSON.parse(event.data)
-  if (Array.isArray(response)) {
-    response.forEach(initTrain)
+  let request = JSON.parse(event.data)
+  if (Array.isArray(request)) {
+    request.forEach(initTrain)
   } else {
-    let uuid = response.train
+    let uuid = request.train
     let section = document.querySelector(`.train[data-uuid='${uuid}']`)
-    if (response.hasOwnProperty('batteryLevel')) {
+    if (request.hasOwnProperty('batteryLevel')) {
       let meter = section.querySelector('meter.battery')
       if (meter) {
-        meter.value = Number(response.batteryLevel)
+        meter.value = Number(request.batteryLevel)
       }
     }
-    if (response.hasOwnProperty('color')) {
+    if (request.hasOwnProperty('actionBrick')) {
+      let checkbox = section.querySelector('input[name=action]')
+      if (checkbox) {
+        checkbox.checked = request.actionBrick
+      }
+    }
+    if (request.hasOwnProperty('color')) {
       let input = queryAll(section, `input[name='color-${uuid}']`).find(function(i) {
-        return i.value == response.color
+        return i.value == request.color
       })
       if (input) {
         input.checked = true
       }
     }
-    if (response.hasOwnProperty('name')) {
+    if (request.hasOwnProperty('name')) {
       let input = section.querySelector('input[name=name]')
       if (input) {
-        input.value = response.name
+        input.value = request.name
       }
     }
-    if (response.hasOwnProperty('speed')) {
+    if (request.hasOwnProperty('speed')) {
       let input = section.querySelector('.throttle')
       if (input) {
-        input.value = Number(response.speed)
+        input.value = Number(request.speed)
       }
     }
-    if (response.hasOwnProperty('direction')) {
+    if (request.hasOwnProperty('direction')) {
       let input = queryAll(section, `input[name='direction-${uuid}']`).find(function(i) {
-        return i.value == response.direction
+        return i.value == request.direction
       })
       if (input) {
         input.checked = true
       }
     }
-    if (response.hasOwnProperty('disconnect')) {
+    if (request.hasOwnProperty('disconnect')) {
       disconnected(uuid)
     }
   }
@@ -85,6 +91,10 @@ const queryAll = function(parent, selector) {
   return Array.prototype.slice.call(parent.querySelectorAll(selector))
 }
 
+const setActionBrick = function(value, uuid) {
+  payload = JSON.stringify({train: uuid, actionBrick: value})
+  $socket.send(payload)
+}
 const setAnnouncer = function(e) {
   $announce = this.checked
   // this is a global setting
@@ -151,9 +161,22 @@ const initTrain = function(train) {
     if (muteInput) {
       let id = `${uuid}-mute`
       muteInput.id = id
-      let label = muteInput.nextElementSibling
-      label.setAttribute('for', id)
+      queryAll(newTrain, 'input[name=mute] ~ label').forEach(function(label) {
+        label.setAttribute('for', id)
+      })
       muteInput.addEventListener('click', setAnnouncer)
+    }
+    // action bricks
+    abInput = newTrain.querySelector('input[name=action]')
+    if (abInput) {
+      let id = `${uuid}-action`
+      abInput.id = id
+      queryAll(newTrain, 'input[name=action] ~ label').forEach(function(label) {
+        label.setAttribute('for', id)
+      })
+      abInput.addEventListener('click', function() {
+        setActionBrick(this.checked, uuid)
+      })
     }
     // battery
     newTrain.querySelector('meter.battery').value = train.battery

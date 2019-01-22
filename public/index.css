@@ -24,9 +24,6 @@ body > .train:not(:first-of-type) {
 .flex > * {
   flex:  0 0 auto;
 }
-.train > .flex {
-  width: 100%;
-}
 .train > section:first-child {
   position: sticky;
   position: -webkit-sticky;
@@ -66,19 +63,15 @@ input[name=name] {
   touch-action: manipulation;
   appearance: none;
   -webkit-appearance: none;
-/*  -moz-appearance: value;*/
-/*  line-height: 4rem;*/
+  margin: 0;
   height: 5rem;
   width: 5rem;
-/*  max-height: 5rem;*/
-/*  max-width: 5rem;*/
   border-radius: 50%;
   border: none;
   display: block;
   cursor: pointer;
   padding: 0;
   box-sizing: border-box;
-/*  opacity: 0.8;*/
   transform: scale(0.9);
   transition: transform 0.3s ease-in-out;
   background-position: center;
@@ -103,6 +96,7 @@ input[name=name] {
   display: block;
   text-align: center;
   border-radius: 0.3em;
+  margin-top: 1vh;
 }
 .stop {
   background-image: url(stop.svg);
@@ -173,12 +167,11 @@ input[name=name] {
   display: flex;
 }
 section {
-  padding-left: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem 0 1rem 1rem;
+  padding: 1.5vh;
 }
 
 .lights {
-  padding-left: 1rem;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -189,7 +182,6 @@ section > div {
   background-image: url(light.svg);
 }
 .motor {
-  padding: 0 1em 1em 1rem;
   flex: 1 0;
   flex-wrap: wrap;
 }
@@ -236,7 +228,7 @@ header.flex {
   background-color: #eef;
 }
 header.flex > h3 {
-  font-size: 4vh;
+  font-size: 3vh;
   padding: 0.5rem 0 0.5rem 1rem;
   font-weight: 500;
   margin: 0;
@@ -244,6 +236,9 @@ header.flex > h3 {
 }
 header input[type=checkbox] {
   display: none;
+}
+header label {
+  padding: 0 0.5em;
 }
 label[for] {
   cursor: pointer;
@@ -284,4 +279,68 @@ p {
   text-align: center;
   font-size: 1.5rem;
   width: 100vw;
+}
+
+:root {
+  --width: 50px;
+  --height: 20px;
+/*  --switch-color: rgb(165, 175, 255);*/
+  --switch-color: darkblue;
+}
+/*switch*/
+input[type=checkbox].switch {
+  max-height: 0;
+  max-width: 0;
+  opacity: 0;
+}
+input[type=checkbox].switch + label {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  display: inline-block;
+  position: relative;
+  box-shadow: inset 0 0 0px 1px #d5d5d5;
+  text-indent: calc(var(--width) + 5px);
+  white-space: nowrap;
+  height: var(--height);
+  width: var(--width);
+  border-radius: calc(var(--height) / 2);
+  padding: 0;
+  background-color: white;
+}
+input[type=checkbox].switch + label::before {
+  background: transparent;
+  content: '';
+  position: absolute;
+  display: block;
+  height: var(--height);
+  width: var(--height);
+  top: 0;
+  left: 0;
+  border-radius: calc(var(--height) / 2);
+  transition: .25s ease-in-out;
+}
+input[type=checkbox].switch + label::after {
+  content: '';
+  position: absolute;
+  display: block;
+  height: var(--height);
+  width: var(--height);
+  top: 0;
+  left: 0px;
+  border-radius: calc(var(--height) / 2);
+  background: white;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2), 0 2px 4px rgba(0, 0, 0, .2);
+  transition: .25s ease-in-out;
+}
+input[type=checkbox].switch:active + label::after {
+  background: #ddd;
+}
+input[type=checkbox].switch:checked + label::before {
+  width: var(--width);
+  background: var(--switch-color);
+}
+input[type=checkbox].switch:checked + label::after {
+  left: calc(var(--width) - var(--height));
+  box-shadow: inset 0 0 0 1px var(--switch-color), 0 2px 4px rgba(0, 0, 0, .2);
 }

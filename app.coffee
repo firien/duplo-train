@@ -18,6 +18,7 @@ pup.on('discover', (train) ->
   await train.connect()
   train.commanded = false
   train.speed = 50
+  train.actionBrick = true
   $trains[train.uuid] = train
   broadcastTrains()
   _direction = 'none'
@@ -60,7 +61,7 @@ pup.on('discover', (train) ->
   train.on('color', (port, newColor) ->
     clearTimeout(colorTimer)
     colorTimer = setTimeout( ->
-      if train.direction != 'none' && !train.commanded
+      if train.direction != 'none' && !train.commanded && train.actionBrick
         if color == $colors.RED
           train.direction = 'none'
           setMotor(train)
@@ -160,6 +161,8 @@ app.ws('/', (ws, req) ->
           await train.setMotorSpeed('MOTOR', 0)
           await train.sleep(500)
         setMotor(train)
+      if request.actionBrick?
+        train.actionBrick = request.actionBrick
       if request.name?
         setName(train, request.name)
       if request.speed?
