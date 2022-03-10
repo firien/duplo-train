@@ -1,7 +1,22 @@
+:root {
+  --background-color: #fff;
+  --text-color: #000;
+  --header-color: #eef;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #222;
+    --text-color: #fff;
+    --header-color: #555;
+    }
+}
+
 body {
   font-family: -apple-system, 'Helvetica Neue', 'Arial', 'Tahoma';
   margin: 0;
   display: flex;
+  background-color: var(--background-color);
 }
 * {
   box-sizing: border-box;
@@ -97,6 +112,7 @@ input[name=name] {
   text-align: center;
   border-radius: 0.3em;
   margin-top: 1vh;
+  color: var(--text-color);
 }
 .stop {
   background-image: url(stop.svg);
@@ -119,14 +135,14 @@ input[name=name] {
 }
 .green:checked + label {
   background-color: green;
-  color: white;
+  color: var(--text-color);
 }
 .blue {
   background-color: blue;
 }
 .blue:checked + label {
   background-color: blue;
-  color: white;
+  color: var(--text-color);
 }
 .red, input[name^=direction].stop {
   background-color: red;
@@ -134,7 +150,7 @@ input[name=name] {
 }
 .red:checked + label, input[name^=direction].stop:checked + label {
   background-color: red;
-  color: white;
+  color: var(--text-color);
 }
 .yellow {
   background-color: yellow;
@@ -147,14 +163,14 @@ input[name=name] {
 }
 .orange:checked + label {
   background-color: orange;
-  color: white;
+  color: var(--text-color);
 }
 .purple {
   background-color: purple;
 }
 .purple:checked + label {
   background-color: purple;
-  color: white;
+  color: var(--text-color);
 }
 .pink {
   background-color: pink;
@@ -198,13 +214,17 @@ input[name^=direction]:checked {
 }
 input[name^=direction]:checked + label {
   background-color: darkgreen;
-  color: white;
+  color: var(--text-color);
+  text-shadow: var(--background-color) 0 1px;
 }
 input[name^=color] {
   border: thin solid #aaa;
 }
 input[name^=color] + label {
   text-transform: capitalize;
+}
+input[name^=color]:checked + label {
+  text-shadow: var(--background-color) 0 1px;
 }
 input.off + label {
   border-top-right-radius: 0.3em;
@@ -214,7 +234,7 @@ input.off + label {
 
 input.off:checked + label {
   background-color: red;
-  color: white;
+  color: var(--text-color);
 }
 input.throttle {
   flex: 1 0 100%;
@@ -225,7 +245,7 @@ input.throttle {
 
 header.flex {
   align-items: center;
-  background-color: #eef;
+  background-color: var(--header-color);
 }
 header.flex > h3 {
   font-size: 3vh;
@@ -233,12 +253,14 @@ header.flex > h3 {
   font-weight: 500;
   margin: 0;
   flex: 1 0;
+  color: var(--text-color);
 }
 header input[type=checkbox] {
   display: none;
 }
 header label {
   padding: 0 0.5em;
+  color: var(--text-color);
 }
 label[for] {
   cursor: pointer;
@@ -279,6 +301,7 @@ p {
   text-align: center;
   font-size: 1.5rem;
   width: 100vw;
+  color: var(--text-color);
 }
 
 :root {
