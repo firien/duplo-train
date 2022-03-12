@@ -95,7 +95,7 @@ requestScan()
 
 app.get('/', (req, res) ->
   requestScan()
-  colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
+  colors = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple', 'pink']
   title = 'Trains'
   res.render('index', {colors, title})
 )

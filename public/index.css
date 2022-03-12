@@ -137,6 +137,13 @@ input[name=name] {
   background-color: green;
   color: var(--text-color);
 }
+.cyan {
+  background-color: cyan;
+}
+.cyan:checked + label {
+  background-color: cyan;
+  color: var(--text-color);
+}
 .blue {
   background-color: blue;
 }
