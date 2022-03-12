@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height='128' viewBox='0 0 128 128' width='128' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns="http://www.w3.org/2000/svg">
+  <style type="text/css">
+    <![CDATA[
+      path {
+        fill: black;
+        stroke-linejoin: round;
+        stroke: black;
+      }
+      circle {
+        fill: black;
+        stroke: white;
+        stroke-width: 2px;
+      }
+      path.heart {
+        fill: red;
+        stroke: none;
+      }
+    ]]>
+  </style>
+  <defs>
+  </defs>
+  <rect fill='white' x='0' y='0' width='128' height='128'/>
+  <!-- <circle cx='64' cy='100' r='77'/> -->
+  <path d="M 10 100 l 18 -25 v -20 h 10 v 6 h 10
+    v -10 l -8 -10 h 26 l -8 10 v 10
+    h 20 v -14 h 24 v 5 h -3 v 10 h 8
+    v 26 h -50 V100 z
+    M 82 61 h 13 v -10 h -13 z"/>
+  <circle cx="62" cy="92" r="10"/>
+  <circle cx="88" cy="86" r="16"/>
+  <!-- <path class="heart" d="M 64 40 C 94,10 138,60 64,104 C -10,60 34,10 64,40z"/> -->
+  <path class="heart" d="M 53 20 c 30,-30 74,20 0,64 c -72,-44 -30,-94 0,-64 z" transform="scale(0.25)" transform-origin="53 20"/>
+
+</svg>
