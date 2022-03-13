@@ -81,24 +81,53 @@ pup.on('discover', async function(train) {
   });
   let color = null;
   let colorTimer = 0;
-  train.on('color', function(port, newColor) {
+  train.on('color', function(port, {color: newColor}) {
+    // console.log($colors[newColor])
     clearTimeout(colorTimer);
+    const stopTrain = (train) => {
+      train.direction = 'none';
+      setMotor(train);
+      broadcast({
+        train: train.uuid,
+        direction: 'none'
+      });
+    }
     colorTimer = setTimeout(async function() {
       if (train.direction !== 'none' && !train.commanded && train.actionBrick) {
         if (color === $colors.RED) {
-          train.direction = 'none';
-          setMotor(train);
-          return broadcast({
-            train: train.uuid,
-            direction: 'none'
-          });
+          stopTrain(train)
         } else if (color === $colors.YELLOW) {
           let speaker = await train.waitForDeviceByType(PoweredUP.Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
           speaker.playSound($sounds.HORN);
+        } else if (color === $colors.BLUE) {
+          let newDirection = String(train.direction)
+          stopTrain(train)
+          let sound = $sounds['STEAM'];
+          let speaker = await train.waitForDeviceByType(PoweredUP.Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
+          speaker.playSound(sound);
+          setTimeout(() => {
+            train.direction = newDirection;
+            setMotor(train);
+            broadcast({
+              train: train.uuid,
+              direction: train.direction
+            });
+          }, 3000)
+        } else if (color === $colors.GREEN) {
+          let newDirection = train.direction === 'forward' ? 'reverse' : 'forward';
+          stopTrain(train)
+          setTimeout(() => {
+            train.direction = newDirection;
+            setMotor(train);
+            broadcast({
+              train: train.uuid,
+              direction: train.direction
+            });
+          }, 500)
         }
       }
-    }, 200);
-    return color = newColor;
+    }, 100);
+    color = newColor;
   });
   return train.on('disconnect', function() {
     broadcast({
@@ -182,9 +211,7 @@ const setMotor = async function(train) {
     }
   })();
   let motor = await train.waitForDeviceByType(PoweredUP.Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR);
-  // console.log(train.speed * factor)
   motor.setPower(train.speed * factor)
-  // train.setMotorSpeed('MOTOR', train.speed * factor);
 };
 
 const refill = async function(train) {
