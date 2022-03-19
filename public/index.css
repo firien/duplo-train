@@ -25,6 +25,8 @@ body > .train {
   flex-wrap: wrap;
   width: 100vw;
   transition: filter 1s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
 }
 body > .train:not(:first-of-type) {
   border-left: thin solid black;
