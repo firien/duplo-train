@@ -35,7 +35,7 @@ Save file as `duplo-train.service`
     After=network.target
     
     [Service]
-    ExecStart=/usr/local/bin/npx coffee app.coffee
+    ExecStart=/usr/local/bin/node server.js
     WorkingDirectory=/home/conductor/duplo-train
     StandardOutput=inherit
     StandardError=inherit
@@ -58,7 +58,7 @@ And setup systemd
 
 Run application; defaults to port 3000
 
-    npx coffee app.coffee
+    node server.js
 
 ### TODO
 
