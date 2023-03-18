@@ -21,7 +21,7 @@ const onmessage = function(event) {
       }
     }
     if (request.hasOwnProperty('color')) {
-      let input = queryAll(section, `input[name='color-${uuid}']`).find(function(i) {
+      let input = Array.from(section.querySelectorAll(`input[name='color-${uuid}']`)).find(function(i) {
         return i.value == request.color
       })
       if (input) {
@@ -41,7 +41,7 @@ const onmessage = function(event) {
       }
     }
     if (request.hasOwnProperty('direction')) {
-      let input = queryAll(section, `input[name='direction-${uuid}']`).find(function(i) {
+      let input = Array.from(section.querySelectorAll(`input[name='direction-${uuid}']`)).find(function(i) {
         return i.value == request.direction
       })
       if (input) {
@@ -64,10 +64,10 @@ const initWebSocket = function() {
   //   })
   // }
   $socket.onclose = function() {
-    queryAll(document.body, '.train:not(.freeze)[data-uuid]').forEach(function(section) {
+    for (let section of document.querySelectorAll('.train:not(.freeze)[data-uuid]')) {
       let uuid = section.getAttribute('data-uuid')
       disconnected(uuid)
-    })
+    }
   }
 }
 
@@ -87,10 +87,6 @@ const speak = function(text) {
   }
 }
 
-const queryAll = function(parent, selector) {
-  return Array.prototype.slice.call(parent.querySelectorAll(selector))
-}
-
 const setActionBrick = function(value, uuid) {
   payload = JSON.stringify({train: uuid, actionBrick: value})
   $socket.send(payload)
@@ -98,11 +94,11 @@ const setActionBrick = function(value, uuid) {
 const setAnnouncer = function(e) {
   $announce = this.checked
   // this is a global setting
-  queryAll(document, 'input[name=mute]').forEach(function(input) {
+  for (let input of document.querySelectorAll('input[name=mute]')) {
     if (input != this) {
       input.checked = this.checked
     }
-  }, this)
+  }
 }
 const setName = function(value, uuid) {
   payload = JSON.stringify({train: uuid, name: value})
@@ -134,9 +130,9 @@ const initTrain = function(train) {
   let section = document.querySelector(`.train[data-uuid='${uuid}']`)
   if (section) {
     section.classList.remove('freeze')
-    queryAll(section, 'input').forEach(function(input) {
+    for (let input of section.querySelectorAll('input')) {
       input.disabled = false
-    })
+    }
   } else {
     let f = document.importNode($template.content, true)
     let newTrain = f.querySelector('.train')
@@ -161,9 +157,9 @@ const initTrain = function(train) {
     if (muteInput) {
       let id = `${uuid}-mute`
       muteInput.id = id
-      queryAll(newTrain, 'input[name=mute] ~ label').forEach(function(label) {
+      for (let label of newTrain.querySelectorAll('input[name=mute] ~ label')) {
         label.setAttribute('for', id)
-      })
+      }
       muteInput.addEventListener('click', setAnnouncer)
     }
     // action bricks
@@ -171,9 +167,9 @@ const initTrain = function(train) {
     if (abInput) {
       let id = `${uuid}-action`
       abInput.id = id
-      queryAll(newTrain, 'input[name=action] ~ label').forEach(function(label) {
+      for (let label of newTrain.querySelectorAll('input[name=action] ~ label')) {
         label.setAttribute('for', id)
-      })
+      }
       abInput.addEventListener('click', function() {
         setActionBrick(this.checked, uuid)
       })
@@ -181,7 +177,7 @@ const initTrain = function(train) {
     // battery
     newTrain.querySelector('meter.battery').value = train.battery
     // lights
-    queryAll(newTrain, 'input[name=color]').forEach(function(button, i) {
+    Array.from(newTrain.querySelectorAll('input[name=color]')).forEach(function(button, i) {
       let id = `${uuid}-light-${i}`
       button.id = id
       button.name = `color-${uuid}`
@@ -229,12 +225,12 @@ const initTrain = function(train) {
       setDirection(this.value, uuid)
     })
     // state-less actions
-    let horn = newTrain.querySelector('.reverse')
-    queryAll(newTrain, 'button.sound').forEach(function(button, i) {
+    // let horn = newTrain.querySelector('.reverse')
+    for (let button of newTrain.querySelectorAll('button.sound')) {
       button.addEventListener('click', function() {
         playSound(this.value, uuid)
       })
-    })
+    }
     let note = document.querySelector('body > p')
     if (note) {
       document.body.removeChild(note)
@@ -246,9 +242,9 @@ const initTrain = function(train) {
 const disconnected = function(uuid) {
   let section = document.querySelector(`.train[data-uuid='${uuid}']`)
   section.classList.add('freeze')
-  queryAll(section, 'input').forEach(function(input) {
+  for (let input of section.querySelectorAll('input')) {
     input.disabled = true
-  })
+  }
 }
 
 document.addEventListener('visibilitychange', function() {
