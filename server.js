@@ -161,7 +161,7 @@ requestScan();
 
 app.get('/', function(req, res) {
   requestScan();
-  let colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
+  let colors = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple', 'pink'];
   let title = 'Trains';
   return res.render('index', {colors, title});
 });
